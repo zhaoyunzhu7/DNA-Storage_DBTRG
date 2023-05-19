@@ -1,0 +1,1 @@
+DBTRG includes encoding, decoding, and error correction algorithms. The encoding and decoding algorithms and their results can be obtained through DBG_v1.py, while error correction and data recovery rate can be obtained through examply.py in ReedSolomon-master.
