@@ -51,3 +51,75 @@ Generalized_Reed_Solomon.symbol_array_to_array(self,array)
 # Takes a list of ints as an argument. Performs the reverse of convert_to_symbol_array(). Transforms each Galois field element in the list  
 # into its coefficent representation.  
 ```  
+### Usage  
+```  
+import generalizedReedSolomon  
+import numpy as np  
+  
+org_info = [30, 20, 20, 9, 25, 1, 7, 2, 0, 18, 17, 22, 11,0,0]  
+org_compare = np.copy(org_info)  
+test_normal_rs = generalizedReedSolomon.Generalized_Reed_Solomon(field_size=31,  
+message_length=27,  
+payload_length=15,  
+symbol_size=1,  
+p_factor=3)  
+# encode message  
+normal_msg = test_normal_rs.encode(org_info)  
+#corrupt encode message  
+normal_msg[6] = 10  
+normal_msg[9] = 12  
+normal_msg[10] = 0  
+normal_msg[16] = 4  
+normal_msg[23] = 10  
+  
+#fix encoded message  
+dec_test_normal = test_normal_rs.decode(normal_msg)  
+print("dec",dec_test_normal)  
+print("org",org_info)  
+print("equal",org_info == dec_test_normal)  
+  
+#dec [30, 20, 20, 9, 25, 1, 7, 2, 0, 18, 17, 22, 11, 0, 0]  
+#org [30, 20, 20, 9, 25, 1, 7, 2, 0, 18, 17, 22, 11, 0, 0]  
+#equal True  
+```  
+```  
+info_symbols = [  
+[20,5],  
+[35,10],  
+[5,10],  
+[35,20],  
+[35,10],  
+[3,10],  
+[35,10],  
+[35,2],  
+[5,10],  
+[35,10]  
+]  
+test_normal_rs =reedSolomon.Generalized_Reed_Solomon(field_size=47,  
+message_length=14,  
+payload_length=10,  
+symbol_size=2,  
+p_factor=2,  
+debug=True)  
+#convert to galois elements  
+symbols = test_normal_rs.convert_to_symbol_array(info_symbols)  
+print("symbols",symbols)  
+symbols_encoded = test_normal_rs.encode(symbols)  
+symbols_encoded[0] =1  
+#convert Galois Elements back to coefficent representation  
+symbols_decoded = test_normal_rs.decode(symbols_encoded)  
+conv_back = test_normal_rs.symbol_array_to_array(symbols_decoded)  
+  
+print(conv_back)  
+print(info_symbols == conv_back)  
+#symbols [945, 1655, 245, 1665, 1655, 151, 1655, 1647, 245, 1655]  
+#[[20, 5], [35, 10], [5, 10], [35, 20], [35, 10], [3, 10], [35, 10], [35, 2], [5, 10], [35, 10]]  
+#True  
+```  
+### Dependencies  
+galois == 0.0.28 <br/>  
+numpy == 1.19.5  
+  
+## TODO  
+1. Add case for r % p != 0 <br/>  
+2. Add parallelization(done for fft)
